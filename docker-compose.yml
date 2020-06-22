@@ -1,0 +1,11 @@
+version: "3"
+
+services:
+  apichallenge:
+    build: .
+    command: npm start
+    ports:
+      - 8083:8083
+    volumes:
+      - ./:/usr/app/
+      - /usr/app/node_modules
