@@ -26,7 +26,22 @@ module.exports = class RecipeController {
         return HttpResponse.externalApiError('Recipe puppy')
       }
 
-      return HttpResponse.ok(getRecipesFromRecipePuppy)
+      const recipes = await getRecipesFromRecipePuppy.results.map(recipe => {
+        return {
+          title: recipe.title.replace(/\r|\n|\t/, '').trim(),
+          ingredients: recipe.ingredients.split(',')
+            .map((ingredient) => ingredient.trim())
+            .sort(),
+          link: recipe.href
+        }
+      })
+
+      const recipeObject = {
+        keywords: keywords,
+        recipes: recipes
+      }
+
+      return HttpResponse.ok(recipeObject)
     } catch (error) {
       return HttpResponse.serverError(error)
     }
