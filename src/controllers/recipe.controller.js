@@ -3,6 +3,7 @@ const {
   InvalidNumberOfParamsError,
   MissingParamError
 } = require('../utils/errors')
+const externalApiController = require('./external-api.controller')
 
 module.exports = class RecipeController {
   async getRecipes (httRequest) {
@@ -18,6 +19,14 @@ module.exports = class RecipeController {
       if (!this.checkLengthOfArrayIngredients(keywords)) {
         return HttpResponse.badRequest(new InvalidNumberOfParamsError())
       }
+      let getRecipesFromRecipePuppy
+      try {
+        getRecipesFromRecipePuppy = await externalApiController.getRecipesByIngredients(keywords)
+      } catch (error) {
+        return HttpResponse.externalApiError('Recipe puppy')
+      }
+
+      return HttpResponse.ok(getRecipesFromRecipePuppy)
     } catch (error) {
       return HttpResponse.serverError(error)
     }

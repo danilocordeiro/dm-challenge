@@ -1,6 +1,8 @@
 const app = require('./config/app')
 require('dotenv').config()
 
-app.listen(process.env.PORT, () => {
+const localhost = '0.0.0.0'
+
+app.listen(process.env.PORT, localhost, () => {
   console.log('Server up in port: ' + process.env.PORT)
 })
