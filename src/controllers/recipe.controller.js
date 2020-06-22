@@ -4,6 +4,7 @@ const {
   MissingParamError
 } = require('../utils/errors')
 const externalApiController = require('./external-api.controller')
+const ExternalApiOutError = require('../utils/errors/external-api-out.error')
 
 module.exports = class RecipeController {
   async getRecipes (httRequest) {
@@ -19,14 +20,10 @@ module.exports = class RecipeController {
       if (!this.checkLengthOfArrayIngredients(keywords)) {
         return HttpResponse.badRequest(new InvalidNumberOfParamsError())
       }
-      let getRecipesFromRecipePuppy
-      try {
-        getRecipesFromRecipePuppy = await externalApiController.getRecipesByIngredients(keywords)
-      } catch (error) {
-        return HttpResponse.externalApiError('Recipe puppy')
-      }
 
-      const recipes = await getRecipesFromRecipePuppy.results.map(recipe => {
+      const recipesFromRecipePuppy = await externalApiController.getRecipesByIngredients(keywords)
+
+      const recipes = await recipesFromRecipePuppy.results.map(recipe => {
         return {
           title: recipe.title.replace(/\r|\n|\t/, '').trim(),
           ingredients: recipe.ingredients.split(',')
@@ -36,6 +33,11 @@ module.exports = class RecipeController {
         }
       })
 
+      for (let i = 0; i < recipes.length; i++) {
+        const gitForRecipe = await externalApiController.getGifForRecipe(recipes[i].title)
+        recipes[i].gif = gitForRecipe.data[0].images.original.url
+      }
+
       const recipeObject = {
         keywords: keywords,
         recipes: recipes
@@ -43,6 +45,9 @@ module.exports = class RecipeController {
 
       return HttpResponse.ok(recipeObject)
     } catch (error) {
+      if (error instanceof ExternalApiOutError) {
+        return HttpResponse.externalApiError(error)
+      }
       return HttpResponse.serverError(error)
     }
   }

@@ -1,5 +1,4 @@
 const ServerError = require('../errors/server.error')
-const ExternalApiOutError = require('../errors/external-api-out.error')
 
 module.exports = class HttpResponse {
   static badRequest (error) {
@@ -24,7 +23,7 @@ module.exports = class HttpResponse {
     return {
       statusCode: 502,
       body: {
-        error: new ExternalApiOutError(error).message
+        error: error.message
       }
     }
   }
