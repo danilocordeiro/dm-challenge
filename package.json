@@ -1,0 +1,35 @@
+{
+  "name": "dm-challenge",
+  "version": "1.0.0",
+  "description": "Delivery Much Tech Challenge",
+  "main": "index.js",
+  "scripts": {
+    "dev": "nodemon --inspect src/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/danilocordeiro/dm-challenge.git"
+  },
+  "author": "Danilo Cordeiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/danilocordeiro/dm-challenge/issues"
+  },
+  "homepage": "https://github.com/danilocordeiro/dm-challenge#readme",
+  "dependencies": {
+    "axios": "^0.19.2",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "eslint": "^7.3.0",
+    "eslint-config-standard": "^14.1.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "express": "^4.17.1",
+    "husky": "^4.2.5",
+    "jest": "^26.0.1",
+    "lint-staged": "^10.2.11",
+    "nodemon": "^2.0.4",
+    "standard": "^14.3.4",
+    "supertest": "^4.0.2"
+  }
+}
