@@ -1,11 +1,9 @@
 const express = require('express')
 const app = express()
 const setupApp = require('./setup')
+const setupRoutes = require('../routes')
 
 setupApp(app)
-
-app.get('/', (req, res) => {
-  res.send('App')
-})
+setupRoutes(app)
 
 module.exports = app
